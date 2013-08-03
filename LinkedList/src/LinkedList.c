@@ -23,6 +23,12 @@ typedef struct node{
 }Node;
 
 
+void listMergeSort(Node **first);
+Node* SortedMerge(Node a, Node n);
+void elementarySplit(Node *ref, Node **firstRef, Node **lastRef);
+
+
+
 // Use void main(){ ... } when using TurboC
 int main(void) {
 	int choice = -1;
@@ -37,6 +43,7 @@ int main(void) {
 	int deleteElement(Node **p, int v);
 	int getListSize(Node *first);
 	void addElementAtPosition(Node **p, int v, int position);
+
 
 	//The next line is not required for Non-Windows PCs or when using TurboC
 	setbuf(stdout, NULL);
@@ -280,3 +287,7 @@ void addElementAtPosition(Node **p, int v, int position){
 	}
 
 }
+
+
+
+
