@@ -23,9 +23,6 @@ typedef struct node{
 }Node;
 
 
-void listMergeSort(Node **first);
-Node* SortedMerge(Node a, Node n);
-void elementarySplit(Node *ref, Node **firstRef, Node **lastRef);
 
 
 
@@ -44,13 +41,15 @@ int main(void) {
 	int getListSize(Node *first);
 	void addElementAtPosition(Node **p, int v, int position);
 
+	void listMergeSort(Node **first);
+
 
 	//The next line is not required for Non-Windows PCs or when using TurboC
 	setbuf(stdout, NULL);
 
 	do{
 
-		printf("Enter the choice : \n1 to add\n2 to print\n3 for searching\n4 for add element to first position\n5 for delete\n6 for list size\n7 for add element at position");
+		printf("Enter the choice : \n1 to add\n2 to print\n3 for searching\n4 for add element to first position\n5 for delete\n6 for list size\n7 for add element at position\n8 for sorting the list");
 		scanf("%d",&choice);
 
 		switch(choice){
@@ -113,6 +112,13 @@ int main(void) {
 				scanf("%d%d",&element,&pos);
 
 				addElementAtPosition(&first, element, pos);
+
+				break;
+			}
+			case 8:{
+				listMergeSort(&first);
+
+				displayElements(first);
 
 				break;
 			}
@@ -288,6 +294,92 @@ void addElementAtPosition(Node **p, int v, int position){
 
 }
 
+void listMergeSort(Node **first){
 
+	Node *head = *first;
+	Node *firstNode,*lastNode;
+
+	Node* sortedMerge(Node *a, Node *b);
+	void elementarySplit(Node *ref, Node **firstRef, Node **lastRef);
+
+	if(head == NULL || head->next == NULL){
+		return;
+	}
+
+	elementarySplit(head, &firstNode, &lastNode);
+
+	listMergeSort(&firstNode);
+	listMergeSort(&lastNode);
+
+	(*first) = sortedMerge(firstNode, lastNode);
+
+}
+
+
+Node* sortedMerge(Node *a, Node *b){
+
+	Node *result = NULL;
+
+	if(a == NULL){
+		return b;
+	}
+	else if(b == NULL){
+		return a;
+	}
+
+
+	if(a->data <= b->data){
+		result = a;
+		result->next = sortedMerge(a->next, b);
+	}
+	else{
+		result = b;
+		result->next = sortedMerge(a, b->next);
+	}
+
+	return result;
+
+}
+
+void elementarySplit(Node *ref, Node **firstRef, Node **lastRef){
+
+	Node *fastWalker, *slowWalker;
+
+	if(ref == NULL || ref->next == NULL){
+
+		//Length of sub-list is less than 2
+
+		*firstRef = ref;
+		*lastRef = NULL;
+
+	}
+
+	else{
+
+		slowWalker = ref;
+		fastWalker = ref->next;
+
+		/* Move 'fast' two nodes, and advance 'slow' one node */
+
+		while(fastWalker != NULL){
+
+			fastWalker = fastWalker->next;
+
+			if(fastWalker != NULL){
+				slowWalker = slowWalker->next;
+				fastWalker = fastWalker->next;
+			}
+
+		}
+
+		 /* 'slow' is before the midpoint in the list, so split it in two
+		      at that point. */
+		*firstRef = ref;
+		*lastRef = slowWalker->next;
+		 slowWalker->next = NULL;
+
+	}
+
+}
 
 
