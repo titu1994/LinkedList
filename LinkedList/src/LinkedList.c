@@ -22,10 +22,6 @@ typedef struct node{
 	struct node *next;
 }Node;
 
-
-
-
-
 // Use void main(){ ... } when using TurboC
 int main(void) {
 	int choice = -1;
@@ -40,21 +36,30 @@ int main(void) {
 	int deleteElement(Node **p, int v);
 	int getListSize(Node *first);
 	void addElementAtPosition(Node **p, int v, int position);
+	void orderedInsert(Node **first, int v);
+	void addByValue(Node **p, int v, int previous);
+	void reverseElements(Node **p);
 
+	void listBubbleSort(Node *p);
+	void listSelectionSort(Node *p);
 	void listMergeSort(Node **first);
 
 
 	//The next line is not required for Non-Windows PCs or when using TurboC
 	setbuf(stdout, NULL);
 
+	printf("Enter the choice : \n1 to add\n2 to print\n3 for searching\n4 for add element to first position\n5 for delete\n6 for list size\n7 for add element at position\n8 for Merge Sort\n9 for ordered insert\n10 for Bubble Sort\n11 for Selection Sort\n12 for reversing the list");
+
 	do{
 
-		printf("Enter the choice : \n1 to add\n2 to print\n3 for searching\n4 for add element to first position\n5 for delete\n6 for list size\n7 for add element at position\n8 for sorting the list");
+		printf("Enter Choice\n");
 		scanf("%d",&choice);
 
 		switch(choice){
 
 			case 1:{
+				//Add an element
+
 				printf("Enter the element\n");
 				scanf("%d",&element);
 
@@ -62,11 +67,15 @@ int main(void) {
 				break;
 			}
 			case 2:{
+				//Display all elements
+
 				displayElements(first);
 
 				break;
 			}
 			case 3:{
+				//Search for an element
+
 				printf("Enter the element\n");
 				scanf("%d",&element);
 
@@ -80,6 +89,8 @@ int main(void) {
 				break;
 			}
 			case 4:{
+				//Add element to first index
+
 				printf("Enter the element\n");
 				scanf("%d",&element);
 
@@ -88,6 +99,8 @@ int main(void) {
 				break;
 			}
 			case 5:{
+				//Delete Element
+
 				printf("Enter the element\n");
 				scanf("%d",&element);
 
@@ -101,12 +114,15 @@ int main(void) {
 				break;
 			}
 			case 6:{
+				//Get size of List
+
 				size = getListSize(first);
 
 				printf("Size is %d\n", size);
 				break;
 			}
 			case 7:{
+				//Add element at any position
 
 				printf("Enter the element and position\n");
 				scanf("%d%d",&element,&pos);
@@ -116,9 +132,40 @@ int main(void) {
 				break;
 			}
 			case 8:{
+				//Merge Sort on Linked List
+
 				listMergeSort(&first);
 
-				displayElements(first);
+				break;
+			}
+			case 9:{
+				//Ordered Insert : Use this for inserting in a Asscending order
+
+				printf("Enter the element\n");
+				scanf("%d",&element);
+
+				orderedInsert(&first, element);
+
+				break;
+			}
+			case 10:{
+				//Bubble Sort on Linled Lists
+
+				listBubbleSort(first);
+
+				break;
+			}
+			case 11:{
+				// Selection Sort on Linked List
+
+				listSelectionSort(first);
+
+				break;
+			}
+			case 12:{
+				//Reverse the Elements in the list
+
+				reverseElements(&first);
 
 				break;
 			}
@@ -163,6 +210,7 @@ void displayElements(Node *p){
 		printf("%d\t",p->data);
 		p = p->next;
 	}
+	printf("\n");
 
 }
 
@@ -381,5 +429,138 @@ void elementarySplit(Node *ref, Node **firstRef, Node **lastRef){
 	}
 
 }
+
+
+void orderedInsert(Node **p, int v){
+	Node *newNode = NULL;
+
+	newNode = (Node*) calloc(1, sizeof(Node));
+	newNode->data = v;
+
+	Node *temp, *previous;
+	temp = *p;
+
+	while(temp != NULL){
+
+		if(temp->data > v){
+			break;
+		}
+
+		previous = temp;
+		temp = temp->next;
+	}
+
+	if(temp == *p){
+		newNode->next = *p;
+		*p = newNode;
+	}
+	else{
+		newNode->next = previous->next;
+		previous->next = newNode;
+	}
+
+}
+
+
+
+void addByValue(Node **p, int v, int pre){
+	Node *newNode = NULL;
+
+	newNode  = (Node*) calloc(1, sizeof(Node));
+	newNode->data = v;
+
+	Node *temp = *p, *previous;
+
+	while(temp != NULL){
+
+		if(temp->data == pre){
+			break;
+		}
+
+		previous = temp;
+		temp = temp->next;
+	}
+
+	if(temp == NULL)
+		return;
+
+	if(temp == *p){
+		newNode->next = *p;
+		*p = newNode;
+	}
+	else{
+		newNode->next = previous->next;
+		previous->next = newNode;
+	}
+
+}
+
+
+void listBubbleSort(Node *p){
+
+	Node *i,*temp = p;
+	int t;
+
+	for(i = p; i->next != NULL; i = i->next){
+
+		for(temp = p; temp->next != NULL; temp = temp->next){
+
+			if(temp->data > temp->next->data){
+
+				t = temp->data;
+				temp->data = temp->next->data;
+				temp->next->data = t;
+
+			}
+
+		}
+
+	}
+
+}
+
+void listSelectionSort(Node *p){
+
+	Node *temp;
+	int t;
+
+	for( ; p->next != NULL; p = p->next){
+
+		for(temp = p->next; temp != NULL; temp = temp->next){
+
+			if(p->data > temp->data){
+
+				t = p->data;
+				p->data = temp->data;
+				temp->data = t;
+
+			}
+
+		}
+
+	}
+
+
+}
+
+void reverseElements(Node **p){
+	Node *first, *last, *temp;
+
+	first = *p;
+	last = NULL;
+
+	while(first != NULL){
+		temp = last;
+
+		last = first;
+		first = first->next;
+		last->next = temp;
+	}
+
+	*p = last;
+
+}
+
+
 
 
