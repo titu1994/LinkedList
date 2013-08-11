@@ -670,7 +670,7 @@ Node* splitLists(Node **p, int pos){
 		return *p;
 	}
 
-	if(pos >= 0 && pos < size){
+	if(pos > 0 && pos < size){
 
 		for(i = 0; i < pos; i++){
 			previous = pTemp;
