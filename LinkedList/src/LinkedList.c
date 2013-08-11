@@ -28,6 +28,8 @@ int main(void) {
 	int element,pos, size;
 
 	Node *first = NULL;
+	Node *second = NULL;
+	Node *third = NULL;
 
 	void addElement(Node **p, int v);
 	void displayElements(Node *p);
@@ -40,6 +42,10 @@ int main(void) {
 	void addByValue(Node **p, int v, int previous);
 	void reverseElements(Node **p);
 
+	Node* copyList(Node *first);
+	Node* concatenateLists(Node *first, Node *second);
+	Node* splitLists(Node **p, int pos);
+
 	void listBubbleSort(Node *p);
 	void listSelectionSort(Node *p);
 	void listMergeSort(Node **first);
@@ -48,7 +54,7 @@ int main(void) {
 	//The next line is not required for Non-Windows PCs or when using TurboC
 	setbuf(stdout, NULL);
 
-	printf("Enter the choice : \n1 to add\n2 to print\n3 for searching\n4 for add element to first position\n5 for delete\n6 for list size\n7 for add element at position\n8 for Merge Sort\n9 for ordered insert\n10 for Bubble Sort\n11 for Selection Sort\n12 for reversing the list");
+	printf("Enter the choice : \n1 to add\n2 to print\n3 for searching\n4 for add element to first position\n5 for delete\n6 for list size\n7 for add element at position\n8 for Merge Sort\n9 for ordered insert\n10 for Bubble Sort\n11 for Selection Sort\n12 for reversing the list\n13 for Copying lists\n14 for Concatenate 2 lists\n15 for Split two lists\n");
 
 	do{
 
@@ -166,6 +172,38 @@ int main(void) {
 				//Reverse the Elements in the list
 
 				reverseElements(&first);
+
+				break;
+			}
+			case 13:{
+				//Copy list
+
+				second = copyList(first);
+
+				displayElements(first);
+				displayElements(second);
+
+				break;
+			}
+			case 14:{
+				//Concatenate a list
+
+				third = concatenateLists(first, second);
+
+				displayElements(third);
+
+				break;
+			}
+			case 15:{
+				//Split two lists
+
+				printf("Enter position of split\n");
+				scanf("%d", &pos);
+
+				second = splitLists(&first, pos);
+
+				displayElements(first);
+				displayElements(second);
 
 				break;
 			}
@@ -560,6 +598,111 @@ void reverseElements(Node **p){
 	*p = last;
 
 }
+
+Node* copyList(Node *first){
+
+	Node *newNode = NULL;
+
+	if(first == NULL){
+		return newNode;
+	}
+
+	newNode = (Node*) calloc(1, sizeof(Node));
+	Node *ref = newNode;
+
+	newNode->data = first->data;
+
+	while(first->next != NULL){
+		newNode->next = (Node*) calloc(1, sizeof(Node));
+		newNode = newNode->next;
+		first = first->next;
+		newNode->data = first->data;
+	}
+
+	newNode->next = NULL;
+	return ref;
+}
+
+
+
+Node* concatenateLists(Node *first, Node *second){
+
+	Node *p = NULL;
+
+	if(first == NULL && second == NULL){
+		return p;
+	}
+	else if(first == NULL){
+		return second;
+	}
+	else if(second == NULL){
+		return first;
+	}
+
+	p = first;
+
+	while(p->next != NULL){
+
+		p = p->next;
+
+	}
+
+	p->next = second;
+
+	return first;
+
+}
+
+
+Node* splitLists(Node **p, int pos){
+	int i,size;
+	Node *newList = NULL, *temp = NULL, *pTemp = *p,*pFinal;
+	Node *previous;
+
+	temp = (Node*) calloc(1, sizeof(Node));
+	newList = temp;
+
+	int getListSize(Node *p);
+
+	size = getListSize(*p);
+
+	if(size == 0){
+		return *p;
+	}
+
+	if(pos >= 0 && pos < size){
+
+		for(i = 0; i < pos; i++){
+			previous = pTemp;
+			pTemp = pTemp->next;
+		}
+
+		temp->data = pTemp->data;
+
+		pFinal = previous;
+
+		while(pTemp->next != NULL){
+			temp->next = (Node*) calloc(1, sizeof(Node));
+
+			temp = temp->next;
+			pTemp = pTemp->next;
+
+			temp->data = pTemp->data;
+		}
+
+		pFinal->next = NULL;
+		temp->next = NULL;
+
+
+		return newList;
+	}
+	else{
+		return *p;
+	}
+
+
+}
+
 
 
 
