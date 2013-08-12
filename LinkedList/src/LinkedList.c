@@ -180,8 +180,15 @@ int main(void) {
 
 				second = copyList(first);
 
-				displayElements(first);
-				displayElements(second);
+				if(first != NULL || second != NULL){
+
+					displayElements(first);
+					displayElements(second);
+
+				}
+				else{
+					printf("First is NULL\n");
+				}
 
 				break;
 			}
@@ -190,7 +197,11 @@ int main(void) {
 
 				third = concatenateLists(first, second);
 
-				displayElements(third);
+				if(third != NULL)
+					displayElements(third);
+
+				else
+					printf("Error\n");
 
 				break;
 			}
@@ -202,8 +213,14 @@ int main(void) {
 
 				second = splitLists(&first, pos);
 
-				displayElements(first);
-				displayElements(second);
+				if(second != NULL){
+					displayElements(first);
+					displayElements(second);
+				}
+				else{
+					printf("Either of the lists is NULL\n");
+				}
+
 
 				break;
 			}
