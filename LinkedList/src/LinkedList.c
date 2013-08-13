@@ -234,6 +234,9 @@ int main(void) {
 
 	}while(choice  != -1);
 
+	listDestructor(&first);
+	listDestructor((&second));
+	listDestructor(&third);
 
 	return EXIT_SUCCESS;
 }
@@ -723,7 +726,20 @@ Node* splitLists(Node **p, int pos){
 }
 
 
+void listDestructor(Node **p){
 
+	Node *next, *del;
+	del = *p;
+
+	while(del != NULL){
+		next = del->next;
+		free(del);
+		del = next;
+	}
+
+	free(*p);
+
+}
 
 
 
