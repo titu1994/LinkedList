@@ -50,6 +50,8 @@ int main(void) {
 	void listSelectionSort(Node *p);
 	void listMergeSort(Node **first);
 
+	void listDestructor(Node **p);
+
 
 	//The next line is not required for Non-Windows PCs or when using TurboC
 	setbuf(stdout, NULL);
@@ -719,6 +721,8 @@ Node* splitLists(Node **p, int pos){
 
 
 }
+
+
 
 
 
