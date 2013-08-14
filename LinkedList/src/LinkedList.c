@@ -816,6 +816,7 @@ Node* listUnion(Node *p, Node *q){
 		q = q->next;
 	}
 
+	return t;
 }
 
 
