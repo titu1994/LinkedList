@@ -50,6 +50,9 @@ int main(void) {
 	void listSelectionSort(Node *p);
 	void listMergeSort(Node **first);
 
+	int listIntersection(Node *p, Node *q);
+	Node* listUnion(Node *p, Node *q);
+
 	void listDestructor(Node **p);
 
 
@@ -222,6 +225,18 @@ int main(void) {
 				else{
 					printf("Either of the lists is NULL\n");
 				}
+
+
+				break;
+			}
+			case 16:{
+				//Intersection of Lists
+
+
+				break;
+			}
+			case 17:{
+				//Union of Lists
 
 
 				break;
@@ -726,6 +741,84 @@ Node* splitLists(Node **p, int pos){
 }
 
 
+int listIntersection(Node *p, Node *q){
+	Node *temp = q;
+	int c = 0;
+
+	while(p != NULL){
+		while(q != NULL){
+
+			if(p->data == q->data){
+
+				c++;
+				printf("%d\t",p->data);
+				break;
+
+			}
+
+			q = q->next;
+		}
+
+		p = p->next;
+		q = temp;
+	}
+
+	return c;
+}
+
+Node* listUnion(Node *p, Node *q){
+
+	Node *t = NULL, *previous;
+	Node *p1 = p, *q1 = q;
+
+	Node *newNode = NULL;
+
+	while(p != NULL){
+		newNode = (Node*) calloc(1, sizeof(Node));
+		newNode->data = p->data;
+		newNode->next = NULL;
+
+		if(t == NULL){
+			t = newNode;
+		}
+		else{
+			previous->next = newNode;
+		}
+
+		previous = newNode;
+		p = p->next;
+	}
+
+	p = p1;
+
+	while(q != NULL){
+
+		while(p != NULL){
+
+			if(p->data == q->data){
+				break;
+			}
+
+			p = p->next;
+
+		}
+
+		if(p == NULL){
+			newNode = (Node*) calloc(1, sizeof(Node));
+			newNode->data = q->data;
+			newNode->next = NULL;
+
+			previous->next = newNode;
+			previous = newNode;
+		}
+
+		p = p1;
+		q = q->next;
+	}
+
+}
+
+
 void listDestructor(Node **p){
 
 	Node *next, *del;
@@ -740,6 +833,8 @@ void listDestructor(Node **p){
 	free(*p);
 
 }
+
+
 
 
 
