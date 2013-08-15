@@ -30,6 +30,8 @@ int main(void) {
 	Node *first = NULL;
 	Node *second = NULL;
 	Node *third = NULL;
+	Node *uni = NULL;
+	Node *inters = NULL;
 
 	void addElement(Node **p, int v);
 	void displayElements(Node *p);
@@ -50,7 +52,7 @@ int main(void) {
 	void listSelectionSort(Node *p);
 	void listMergeSort(Node **first);
 
-	int listIntersection(Node *p, Node *q);
+	Node* listIntersection(Node *p, Node *q);
 	Node* listUnion(Node *p, Node *q);
 
 	void listDestructor(Node **p);
@@ -59,7 +61,7 @@ int main(void) {
 	//The next line is not required for Non-Windows PCs or when using TurboC
 	setbuf(stdout, NULL);
 
-	printf("Enter the choice : \n1 to add\n2 to print\n3 for searching\n4 for add element to first position\n5 for delete\n6 for list size\n7 for add element at position\n8 for Merge Sort\n9 for ordered insert\n10 for Bubble Sort\n11 for Selection Sort\n12 for reversing the list\n13 for Copying lists\n14 for Concatenate 2 lists\n15 for Split two lists\n");
+	printf("Enter the choice : \n1 to add\n2 to print\n3 for searching\n4 for add element to first position\n5 for delete\n6 for list size\n7 for add element at position\n8 for Merge Sort\n9 for ordered insert\n10 for Bubble Sort\n11 for Selection Sort\n12 for reversing the list\n13 for Copying lists\n14 for Concatenate 2 lists\n15 for Split two lists\n16 for Intersection if 2 Lists\n17 for Union of two lists\n18 for deleting all list\n");
 
 	do{
 
@@ -177,6 +179,7 @@ int main(void) {
 				//Reverse the Elements in the list
 
 				reverseElements(&first);
+				printf("List Reversed \n");
 
 				break;
 			}
@@ -232,12 +235,31 @@ int main(void) {
 			case 16:{
 				//Intersection of Lists
 
+				inters = listIntersection(first, second);
+
+				displayElements(inters);
 
 				break;
 			}
 			case 17:{
 				//Union of Lists
 
+				uni = listUnion(first, second);
+
+				displayElements(uni);
+
+				break;
+			}
+			case 18:{
+				//Delete all lists
+
+				listDestructor(&first);
+				listDestructor(&second);
+				listDestructor(&third);
+				listDestructor(&uni);
+				listDestructor(&inters);
+
+				printf("All lists cleared \n");
 
 				break;
 			}
@@ -252,6 +274,10 @@ int main(void) {
 	listDestructor(&first);
 	listDestructor((&second));
 	listDestructor(&third);
+	listDestructor(&uni);
+	listDestructor(&inters);
+
+	printf("\nEnd\n");
 
 	return EXIT_SUCCESS;
 }
@@ -337,6 +363,7 @@ int deleteElement(Node **p, int v){
 
 		if(temp == *p){
 			*p = temp->next;
+			free(temp);
 		}
 		else{
 			previous->next = temp->next;
@@ -741,19 +768,23 @@ Node* splitLists(Node **p, int pos){
 }
 
 
-int listIntersection(Node *p, Node *q){
-	Node *temp = q;
-	int c = 0;
+Node* listIntersection(Node *p, Node *q){
+	Node *temp = q, *previous;
+	Node *newList = NULL;
+
+	newList = (Node*) calloc(1, sizeof(Node));
+	Node* ref = newList;
 
 	while(p != NULL){
 		while(q != NULL){
 
 			if(p->data == q->data){
+				previous = newList;
+				newList->data = p->data;
+				newList->next = (Node*) calloc(1, sizeof(Node));
+				newList = newList->next;
 
-				c++;
-				printf("%d\t",p->data);
 				break;
-
 			}
 
 			q = q->next;
@@ -763,13 +794,15 @@ int listIntersection(Node *p, Node *q){
 		q = temp;
 	}
 
-	return c;
+	newList = previous;
+
+	return ref;
 }
 
 Node* listUnion(Node *p, Node *q){
 
 	Node *t = NULL, *previous;
-	Node *p1 = p, *q1 = q;
+	Node *p1 = p;
 
 	Node *newNode = NULL;
 
@@ -822,16 +855,15 @@ Node* listUnion(Node *p, Node *q){
 
 void listDestructor(Node **p){
 
-	Node *next, *del;
-	del = *p;
+	Node *next;
 
-	while(del != NULL){
-		next = del->next;
-		free(del);
-		del = next;
+	while(*p != NULL){
+		next = (*p)->next;
+		free(*p);
+		(*p) = next;
 	}
 
-	free(*p);
+	free(p);
 
 }
 
