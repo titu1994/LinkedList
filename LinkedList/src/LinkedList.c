@@ -420,7 +420,7 @@ void addElementAtPosition(Node **p, int v, int position){
 
 			newNode->next = NULL;
 			(*p)->next = newNode;
-
+			//temp = newNode;
 		}
 		else{
 
@@ -436,10 +436,16 @@ void addElementAtPosition(Node **p, int v, int position){
 
 		Node *temp = *p;
 
-		while(temp->next != NULL){
-			temp = temp->next;
+		if(temp != NULL){
+			while(temp->next != NULL){
+				temp = temp->next;
+			}
+			temp->next = newNode;
 		}
-		temp->next = newNode;
+		else{
+			*p = newNode;
+		}
+
 	}
 
 }
