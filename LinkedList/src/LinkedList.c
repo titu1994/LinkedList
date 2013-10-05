@@ -1,7 +1,7 @@
 /*
  ============================================================================
  Name        : LinkedList.c
- Author      : 
+ Author      : Somshubra Majumdar
  Version     :
  Copyright   : Your copyright notice
  Description : Hello World in C, Ansi-style
